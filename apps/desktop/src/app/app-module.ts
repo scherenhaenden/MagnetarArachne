@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { App } from './app';
 import { appRoutes } from './app.routes';
-import { NxWelcome } from './nx-welcome';
+import { NxWelcome } from './welcome-component/nx-welcome';
 
 @NgModule({
   declarations: [App, NxWelcome],
