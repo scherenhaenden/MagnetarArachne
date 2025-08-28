@@ -1,4 +1,4 @@
-<div class="search">
+<ng-container class="search">
   <ng-content select="[icon]"></ng-content>
-  <input [placeholder]="placeholder" [value]="value" (input)="onInput(($event.target as HTMLInputElement).value)" />
-</div>
+  <input [placeholder]="placeholder" [value]="value" (input)="onInput($event)" />
+</ng-container>

@@ -1,1 +1,1536 @@
 /* You can add global styles to this file, and also import other style files */
+
+// ===== SCSS VARIABLES & MIXINS =====
+// This section defines all the reusable variables and mixins for the application's styling.
+
+// ===== Color Palette =====
+// Defines the primary brand colors used throughout the UI for different states and elements.
+$primary: #6366f1;
+$success: #10b981;
+$warning: #f59e0b;
+$danger: #ef4444;
+$info: #06b6d4;
+$purple: #8b5cf6;
+$pink: #ec4899;
+$lime: #84cc16;
+$orange: #f97316;
+$teal: #14b8a6;
+
+// ===== Light Theme =====
+// Color variables for the light theme, including background, text, and border colors.
+// Light Theme Colors
+$light-bg-primary: #ffffff;
+$light-bg-secondary: #f8fafc;
+$light-bg-tertiary: #f1f5f9;
+$light-text-primary: #1e293b;
+$light-text-secondary: #64748b;
+$light-border: #e2e8f0;
+
+// ===== Dark Theme =====
+// Color variables for the dark theme, providing a contrast to the light theme.
+// Dark Theme Colors
+$dark-bg-primary: #0f172a;
+$dark-bg-secondary: #1e293b;
+$dark-bg-tertiary: #334155;
+$dark-text-primary: #f1f5f9;
+$dark-text-secondary: #94a3b8;
+$dark-border: #334155;
+
+// ===== Shadow System =====
+// A modern shadow system with different levels of depth (sm, md, lg, xl, 2xl).
+// These mixins are used to apply consistent shadows across the application.
+// Modern Shadow System
+@mixin shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+@mixin shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+@mixin shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+@mixin shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+@mixin shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+// ===== Dark Theme Shadows =====
+// More pronounced shadows for the dark theme to ensure visibility against dark backgrounds.
+// Dark Theme Shadows (more pronounced)
+@mixin dark-shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3); }
+@mixin dark-shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3); }
+@mixin dark-shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4); }
+@mixin dark-shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5); }
+@mixin dark-shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8); }
+
+// ===== Glassmorphism Effect =====
+// Mixins for creating a "glass" effect, often used for panels and overlays.
+// It combines blur, transparency, and a subtle border.
+// Glassmorphism Effect
+@mixin glass-effect {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+// Dark theme variant of the glassmorphism effect.
+@mixin dark-glass-effect {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// ===== Transitions =====
+// Defines standard transition timings for animations, ensuring a consistent feel for UI interactions.
+// Transitions
+$transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ===== BASE STYLES =====
+// Basic reset and global styles for the entire application.
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Global styles for better dark mode visibility
+body, html {
+  // Ensure proper text color inheritance in both themes
+  color: $light-text-primary;
+
+  &.dark-theme,
+  .dark-theme & {
+    color: $dark-text-primary;
+  }
+}
+
+// Fix for any text elements that might not inherit color properly
+h1, h2, h3, h4, h5, h6, p, span, div, label, button, input, textarea, select {
+  color: inherit;
+
+  // Ensure dark theme text is visible
+  .dark-theme & {
+    color: $dark-text-primary;
+
+    &::placeholder {
+      color: $dark-text-secondary;
+    }
+  }
+}
+
+// Fix for links and interactive elements
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: $transition-fast;
+
+  .dark-theme & {
+    color: lighten($primary, 20%);
+  }
+
+  &:hover {
+    color: darken($primary, 10%);
+
+    .dark-theme & {
+      color: lighten($primary, 30%);
+    }
+  }
+}
+
+// Fix for buttons without specific styling
+button {
+  color: inherit;
+
+  .dark-theme & {
+    color: $dark-text-primary;
+
+    &:not(.primary):not(.secondary):not(.danger):not(.success) {
+      background: transparent;
+      border-color: $dark-border;
+
+      &:hover {
+        background: $dark-bg-tertiary;
+        border-color: $dark-text-secondary;
+      }
+    }
+  }
+}
+
+// Fix for form elements
+input, textarea, select {
+  .dark-theme & {
+    background: $dark-bg-tertiary;
+    border-color: $dark-border;
+    color: $dark-text-primary;
+
+    &:focus {
+      border-color: $primary;
+      background: $dark-bg-secondary;
+    }
+
+    &::placeholder {
+      color: $dark-text-secondary;
+    }
+  }
+}
+
+// Fix for any elements with gradients that might be hard to read
+.gradient-text {
+  background: linear-gradient(135deg, $primary, $purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  .dark-theme & {
+    // Make gradient brighter in dark mode
+    background: linear-gradient(135deg, lighten($primary, 20%), lighten($purple, 20%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+// The main workspace container, setting up the overall layout and theme properties.
+.magnetar-workspace {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+  background: $light-bg-secondary;
+  color: $light-text-primary;
+  transition: $transition-normal;
+
+  // Dark theme styles for the workspace.
+  // Dark theme
+  &.dark-theme {
+    background: $dark-bg-primary;
+    color: $dark-text-primary;
+  }
+}
+
+// ===== HEADER BAR =====
+// Styles for the main header at the top of the application.
+.header-bar {
+  height: 60px;
+  background: $light-bg-primary;
+  border-bottom: 1px solid $light-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  @include shadow-sm;
+  transition: $transition-normal;
+
+  // Dark theme styles for the header.
+  .dark-theme & {
+    background: $dark-bg-secondary;
+    border-bottom-color: $dark-border;
+    @include dark-shadow-md;
+  }
+
+  // Left section of the header, containing the logo and navigation.
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  // Logo section with an icon and text.
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    // Icon for the logo.
+    .logo-icon {
+      font-size: 24px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    // Text part of the logo with a gradient effect.
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: $light-text-primary;
+      background: linear-gradient(135deg, $primary, $purple);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      // Dark theme styles for the logo text.
+      .dark-theme & {
+        color: $dark-text-primary;
+      }
+    }
+  }
+
+  // Main navigation links in the header.
+  .main-nav {
+    display: flex;
+    gap: 5px;
+
+    // Individual navigation item.
+    .nav-item {
+      padding: 8px 16px;
+      border: none;
+      background: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: $transition-fast;
+      position: relative;
+      overflow: hidden;
+
+      // A pseudo-element for a subtle hover animation.
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      // Hover effect for navigation items.
+      &:hover {
+        background: $light-bg-tertiary;
+        @include shadow-sm;
+        transform: translateY(-1px);
+
+        &::before {
+          left: 100%;
+        }
+
+        // Dark theme hover effect.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          @include dark-shadow-sm;
+        }
+      }
+
+      // Style for the active navigation item.
+      &.active {
+        background: linear-gradient(135deg, $primary, $purple);
+        color: white;
+        @include shadow-md;
+        transform: translateY(-2px);
+
+        // Dark theme active style.
+        .dark-theme & {
+          @include dark-shadow-lg;
+        }
+      }
+    }
+  }
+
+  // Right section of the header, containing action buttons and user avatar.
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    // General button style for the header.
+    .header-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: $transition-fast;
+      position: relative;
+
+      // Hover effect for header buttons.
+      &:hover {
+        background: $light-bg-tertiary;
+        @include shadow-sm;
+        transform: translateY(-1px) scale(1.05);
+
+        // Dark theme hover effect.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          @include dark-shadow-sm;
+        }
+      }
+    }
+
+    // User avatar in the header.
+    .user-avatar {
+      img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        @include shadow-md;
+        transition: $transition-fast;
+
+        // Hover effect for the avatar.
+        &:hover {
+          @include shadow-lg;
+          transform: scale(1.1);
+
+          // Dark theme hover effect.
+          .dark-theme & {
+            @include dark-shadow-xl;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ===== MAIN CONTENT =====
+// Styles for the main content area, which holds the sidebars and the canvas.
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+// ===== LEFT SIDEBAR =====
+// Styles for the left sidebar, which typically contains a list of nodes or tools.
+.left-sidebar {
+  width: 280px;
+  background: $light-bg-primary;
+  border-right: 1px solid $light-border;
+  display: flex;
+  flex-direction: column;
+  @include shadow-sm;
+  transition: $transition-normal;
+
+  // Dark theme styles for the left sidebar.
+  .dark-theme & {
+    background: $dark-bg-secondary;
+    border-right-color: $dark-border;
+    @include dark-shadow-md;
+  }
+
+  // Header section of the sidebar.
+  .sidebar-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid $light-border;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    // Dark theme styles for the sidebar header.
+    .dark-theme & {
+      border-bottom-color: $dark-border;
+    }
+
+    // Title in the sidebar header.
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, $primary, $teal);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  // Button to collapse or expand the sidebar.
+  .collapse-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: $transition-fast;
+
+    // Hover effect for the collapse button.
+    &:hover {
+      background: $light-bg-tertiary;
+      @include shadow-sm;
+      transform: scale(1.1);
+
+      // Dark theme hover effect.
+      .dark-theme & {
+        background: $dark-bg-tertiary;
+      }
+    }
+  }
+
+  // Search box for filtering nodes.
+  .search-box {
+    padding: 16px 20px;
+    border-bottom: 1px solid $light-border;
+    position: relative;
+
+    // Dark theme styles for the search box.
+    .dark-theme & {
+      border-bottom-color: $dark-border;
+    }
+
+    // Search icon inside the input field.
+    svg {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $light-text-secondary;
+      transition: $transition-fast;
+
+      // Dark theme styles for the icon.
+      .dark-theme & {
+        color: $dark-text-secondary;
+      }
+    }
+
+    // The search input field itself.
+    input {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      border: 1px solid $light-border;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: $light-bg-secondary;
+      color: $light-text-primary;
+      transition: $transition-fast;
+
+      // Dark theme styles for the input.
+      .dark-theme & {
+        background: $dark-bg-tertiary;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+      }
+
+      // Focus effect for the input field.
+      &:focus {
+        border-color: $primary;
+        @include shadow-md;
+        transform: translateY(-1px);
+
+        // The icon color changes on focus.
+        & + svg {
+          color: $primary;
+        }
+
+        // Dark theme focus effect.
+        .dark-theme & {
+          @include dark-shadow-lg;
+        }
+      }
+
+      // Placeholder text style.
+      &::placeholder {
+        color: $light-text-secondary;
+
+        // Dark theme placeholder text.
+        .dark-theme & {
+          color: $dark-text-secondary;
+        }
+      }
+    }
+  }
+
+  // Container for the categories of nodes.
+  .node-categories {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+
+    // Custom scrollbar for the node categories.
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $light-border;
+      border-radius: 3px;
+
+      // Dark theme scrollbar thumb.
+      .dark-theme & {
+        background: $dark-border;
+      }
+    }
+  }
+
+  // A single section for a category of nodes.
+  .category-section {
+    margin-bottom: 10px;
+
+    // Header for a category, which can be clicked to expand/collapse.
+    .category-header {
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: $light-text-secondary;
+      cursor: pointer;
+      transition: $transition-fast;
+
+      // Dark theme styles for the category header.
+      .dark-theme & {
+        color: $dark-text-secondary;
+      }
+
+      // Hover effect for the category header.
+      &:hover {
+        background: $light-bg-secondary;
+        color: $light-text-primary;
+
+        // Dark theme hover effect.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          color: $dark-text-primary;
+        }
+      }
+    }
+
+    // List of nodes within a category.
+    .node-list {
+      padding-left: 10px;
+    }
+
+    // An individual draggable node item in the sidebar.
+    .node-item {
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: grab;
+      border-radius: 8px;
+      margin: 2px 10px;
+      transition: $transition-fast;
+      position: relative;
+
+      // Hover effect for a node item.
+      &:hover {
+        background: $light-bg-tertiary;
+        @include shadow-sm;
+        transform: translateX(4px);
+
+        // Dark theme hover effect.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          @include dark-shadow-sm;
+        }
+      }
+
+      // Style when the node is being dragged.
+      &:active {
+        cursor: grabbing;
+        transform: translateX(4px) scale(0.98);
+      }
+    }
+  }
+}
+
+// ===== Node Icons =====
+// Enhanced styling for the icons representing different types of nodes.
+// Node Icons with enhanced styling
+.node-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  @include shadow-sm;
+  transition: $transition-fast;
+
+  // Hover effect for node icons.
+  &:hover {
+    @include shadow-md;
+    transform: scale(1.1);
+  }
+
+  // Specific background gradients for each node type to make them easily distinguishable.
+  &.start { background: linear-gradient(135deg, $success, #059669); }
+  &.function { background: linear-gradient(135deg, $primary, #4f46e5); }
+  &.condition { background: linear-gradient(135deg, $warning, #d97706); }
+  &.switch { background: linear-gradient(135deg, $purple, #7c3aed); }
+  &.ai { background: linear-gradient(135deg, $pink, #db2777); }
+  &.vector { background: linear-gradient(135deg, $info, #0891b2); }
+  &.chat { background: linear-gradient(135deg, $lime, #65a30d); }
+  &.database { background: linear-gradient(135deg, #64748b, #475569); }
+  &.api { background: linear-gradient(135deg, $orange, #ea580c); }
+  &.file { background: linear-gradient(135deg, #6b7280, #4b5563); }
+  &.transform { background: linear-gradient(135deg, $teal, #0d9488); }
+}
+
+// ===== CANVAS CONTAINER =====
+// The main area where the workflow nodes are displayed and connected.
+.canvas-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: $light-bg-secondary;
+  transition: $transition-normal;
+
+  // Dark theme styles for the canvas container.
+  .dark-theme & {
+    background: $dark-bg-primary;
+  }
+
+  // Toolbar for canvas-related actions like zoom and run.
+  .canvas-toolbar {
+    height: 50px;
+    background: $light-bg-primary;
+    border-bottom: 1px solid $light-border;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    @include shadow-sm;
+
+    // Dark theme styles for the toolbar.
+    .dark-theme & {
+      background: $dark-bg-secondary;
+      border-bottom-color: $dark-border;
+      @include dark-shadow-sm;
+    }
+
+    // Left and right sections of the toolbar.
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    // General button style for the toolbar.
+    .toolbar-btn {
+      padding: 8px 14px;
+      border: 1px solid $light-border;
+      background: $light-bg-primary;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: $transition-fast;
+      position: relative;
+      overflow: hidden;
+
+      // Dark theme styles for the toolbar button.
+      .dark-theme & {
+        background: $dark-bg-tertiary;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+      }
+
+      // Pseudo-element for a shimmer effect on hover.
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.5s;
+      }
+
+      // Hover effect for toolbar buttons.
+      &:hover {
+        @include shadow-md;
+        transform: translateY(-2px);
+
+        &::before {
+          left: 100%;
+        }
+
+        // Dark theme hover effect.
+        .dark-theme & {
+          @include dark-shadow-md;
+        }
+      }
+
+      // Style for an active or selected toolbar button.
+      &.active {
+        background: linear-gradient(135deg, $primary, $purple);
+        color: white;
+        border-color: $primary;
+        @include shadow-lg;
+
+        // Dark theme active style.
+        .dark-theme & {
+          @include dark-shadow-lg;
+        }
+      }
+
+      // Style for a primary action button (e.g., "Run").
+      &.primary {
+        background: linear-gradient(135deg, $success, #059669);
+        color: white;
+        border-color: $success;
+        @include shadow-md;
+
+        // Hover effect for the primary button.
+        &:hover {
+          @include shadow-lg;
+          transform: translateY(-2px) scale(1.02);
+
+          // Dark theme hover effect.
+          .dark-theme & {
+            @include dark-shadow-xl;
+          }
+        }
+      }
+    }
+
+    // Controls for zooming in and out of the canvas.
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 10px;
+
+      // Individual zoom button (+ or -).
+      .zoom-btn {
+        width: 28px;
+        height: 28px;
+        border: 1px solid $light-border;
+        background: $light-bg-primary;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: $transition-fast;
+
+        // Dark theme styles for the zoom button.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          border-color: $dark-border;
+          color: $dark-text-primary;
+        }
+
+        // Hover effect for the zoom button.
+        &:hover {
+          @include shadow-sm;
+          transform: scale(1.1);
+
+          // Dark theme hover effect.
+          .dark-theme & {
+            @include dark-shadow-sm;
+          }
+        }
+      }
+
+      // Display for the current zoom level.
+      .zoom-level {
+        font-size: 12px;
+        color: $light-text-secondary;
+        min-width: 40px;
+        text-align: center;
+        font-weight: 500;
+
+        // Dark theme styles for the zoom level display.
+        .dark-theme & {
+          color: $dark-text-secondary;
+        }
+      }
+    }
+  }
+
+  // The main workspace where nodes are placed.
+  .canvas-workspace {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+
+    // A grid background for the canvas to help with alignment.
+    .canvas-grid {
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(circle, rgba(203, 213, 225, 0.5) 1px, transparent 1px);
+      background-size: 20px 20px;
+      position: relative;
+      transition: $transition-normal;
+
+      // Dark theme style for the grid.
+      .dark-theme & {
+        background-image: radial-gradient(circle, rgba(51, 65, 85, 0.5) 1px, transparent 1px);
+      }
+    }
+  }
+}
+
+// ===== WORKFLOW NODES =====
+// Styles for the individual nodes that appear on the canvas.
+.workflow-node {
+  position: absolute;
+  background: $light-bg-primary;
+  border: 2px solid $light-border;
+  border-radius: 12px;
+  min-width: 160px;
+  @include shadow-lg;
+  cursor: move;
+  transition: $transition-normal;
+  backdrop-filter: blur(8px);
+
+  // Dark theme styles for workflow nodes.
+  .dark-theme & {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: $dark-border;
+    @include dark-shadow-xl;
+  }
+
+  // Hover effect for nodes, making them "pop".
+  &:hover {
+    @include shadow-2xl;
+    transform: translateY(-4px) scale(1.02);
+
+    // Dark theme hover effect.
+    .dark-theme & {
+      @include dark-shadow-2xl;
+    }
+  }
+
+  // Specific border colors and shadows for different node types for visual distinction.
+  &.start-node {
+    border-color: $success;
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  &.function-node {
+    border-color: $primary;
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  &.condition-node {
+    border-color: $warning;
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  &.chat-node {
+    border-color: $lime;
+    box-shadow: 0 0 0 1px rgba(132, 204, 22, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  // Header of a node, containing the title and status.
+  .node-header {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(241, 245, 249, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(250, 251, 252, 0.8), rgba(248, 250, 252, 0.6));
+    border-radius: 10px 10px 0 0;
+    backdrop-filter: blur(4px);
+
+    // Dark theme styles for the node header.
+    .dark-theme & {
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.8), rgba(30, 41, 59, 0.6));
+      border-bottom-color: rgba(51, 65, 85, 0.8);
+    }
+
+    // Title of the node.
+    .node-title {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 600;
+      color: $light-text-primary;
+
+      // Dark theme title style.
+      .dark-theme & {
+        color: $dark-text-primary;
+      }
+    }
+
+    // Status indicator for the node (e.g., success, running).
+    .node-status {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      @include shadow-sm;
+
+      // Different colors for different statuses.
+      &.success {
+        background: linear-gradient(135deg, $success, #059669);
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+      }
+      &.running {
+        background: linear-gradient(135deg, $warning, #d97706);
+        animation: pulse-glow 2s infinite;
+        box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+      }
+      &.pending {
+        background: linear-gradient(135deg, #64748b, #475569);
+        box-shadow: 0 0 8px rgba(100, 116, 139, 0.4);
+      }
+      &.waiting {
+        background: linear-gradient(135deg, $pink, #db2777);
+        animation: pulse-glow 2s infinite;
+        box-shadow: 0 0 8px rgba(236, 72, 153, 0.4);
+      }
+    }
+  }
+
+  // Body of the node, containing fields and previews.
+  .node-body {
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+
+    // Dark theme styles for the node body.
+    .dark-theme & {
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    // A single field within the node body.
+    .node-field {
+      margin-bottom: 8px;
+
+      // Label for the field.
+      label {
+        font-size: 11px;
+        color: $light-text-secondary;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        // Dark theme label style.
+        .dark-theme & {
+          color: $dark-text-secondary;
+        }
+      }
+
+      // A preview of the field's value.
+      .field-preview {
+        font-size: 12px;
+        color: $light-text-primary;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+
+        // Dark theme preview style.
+        .dark-theme & {
+          color: $dark-text-primary;
+        }
+      }
+    }
+  }
+
+  // Connection points (inputs and outputs) on the sides of the nodes.
+  .connection-point {
+    width: 14px;
+    height: 14px;
+    border: 3px solid $primary;
+    background: $light-bg-primary;
+    border-radius: 50%;
+    position: absolute;
+    cursor: crosshair;
+    transition: $transition-fast;
+    @include shadow-md;
+
+    // Dark theme styles for connection points.
+    .dark-theme & {
+      background: $dark-bg-primary;
+      @include dark-shadow-md;
+    }
+
+    // Hover effect for connection points.
+    &:hover {
+      background: $primary;
+      transform: scale(1.3);
+      @include shadow-lg;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+      // Dark theme hover effect.
+      .dark-theme & {
+        @include dark-shadow-xl;
+      }
+    }
+
+    // Style for input connection points.
+    &.input {
+      left: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    // Style for output connection points.
+    &.output {
+      right: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      // Special style for a "true" output (e.g., from a condition).
+      &.true {
+        top: 25%;
+        border-color: $success;
+        &:hover { background: $success; }
+      }
+
+      // Special style for a "false" output.
+      &.false {
+        top: 75%;
+        border-color: $danger;
+        &:hover { background: $danger; }
+      }
+    }
+  }
+}
+
+// ===== Animations =====
+// Enhanced animations used in the UI, like the pulsing glow for running nodes.
+// Enhanced animations
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+}
+
+// ===== CONNECTION LINES =====
+// Styles for the SVG lines that connect the nodes.
+.connection-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+
+  // A single connection line.
+  .connection-line {
+    transition: $transition-normal;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+
+    // Style for an active or highlighted connection.
+    &.active {
+      stroke-width: 4;
+      filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.4));
+      animation: flow 2s linear infinite;
+    }
+  }
+}
+
+// Animation for the connection lines to indicate data flow.
+@keyframes flow {
+  0% { stroke-dasharray: 0 10; }
+  100% { stroke-dasharray: 10 0; }
+}
+
+// ===== RIGHT SIDEBAR =====
+// Styles for the right sidebar, which typically shows properties of the selected node.
+.right-sidebar {
+  width: 320px;
+  background: $light-bg-primary;
+  border-left: 1px solid $light-border;
+  display: flex;
+  flex-direction: column;
+  @include shadow-sm;
+  transition: $transition-normal;
+
+  // Dark theme styles for the right sidebar.
+  .dark-theme & {
+    background: $dark-bg-secondary;
+    border-left-color: $dark-border;
+    @include dark-shadow-md;
+  }
+
+  // Content area of the properties sidebar.
+  .properties-content {
+    flex: 1;
+    overflow-y: auto;
+
+    // Custom scrollbar for the properties content.
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $light-border;
+      border-radius: 3px;
+
+      // Dark theme scrollbar thumb.
+      .dark-theme & {
+        background: $dark-border;
+      }
+    }
+  }
+
+  // A section within the properties sidebar (e.g., "Settings").
+  .property-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid $light-border;
+
+    // Dark theme styles for the property section.
+    .dark-theme & {
+      border-bottom-color: $dark-border;
+    }
+
+    // Title of the property section.
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, $primary, $purple);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    // Tabs for switching between different property views (e.g., "Input", "Output").
+    .property-tabs {
+      display: flex;
+      gap: 4px;
+
+      // A single tab.
+      .tab {
+        padding: 8px 14px;
+        border: none;
+        background: $light-bg-tertiary;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 500;
+        transition: $transition-fast;
+
+        // Dark theme styles for the tab.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          color: $dark-text-primary;
+        }
+
+        // Hover effect for the tab.
+        &:hover {
+          @include shadow-sm;
+          transform: translateY(-1px);
+
+          // Dark theme hover effect.
+          .dark-theme & {
+            @include dark-shadow-sm;
+          }
+        }
+
+        // Style for the active tab.
+        &.active {
+          background: linear-gradient(135deg, $primary, $purple);
+          color: white;
+          @include shadow-md;
+
+          // Dark theme active style.
+          .dark-theme & {
+            @include dark-shadow-md;
+          }
+        }
+      }
+    }
+  }
+
+  // Form for editing node properties.
+  .property-form {
+    padding: 20px;
+
+    // A group of form elements (label + input).
+    .form-group {
+      margin-bottom: 18px;
+
+      // Label for a form control.
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: $light-text-primary;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        // Dark theme label style.
+        .dark-theme & {
+          color: $dark-text-primary;
+        }
+      }
+
+      // General style for form controls (inputs, textareas, etc.).
+      .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid $light-border;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+        background: $light-bg-secondary;
+        color: $light-text-primary;
+        transition: $transition-fast;
+
+        // Dark theme styles for form controls.
+        .dark-theme & {
+          background: $dark-bg-tertiary;
+          border-color: $dark-border;
+          color: $dark-text-primary;
+        }
+
+        // Focus effect for form controls.
+        &:focus {
+          border-color: $primary;
+          @include shadow-md;
+          transform: translateY(-1px);
+          background: $light-bg-primary;
+
+          // Dark theme focus effect.
+          .dark-theme & {
+            background: $dark-bg-secondary;
+            @include dark-shadow-md;
+          }
+        }
+
+        // Placeholder text style.
+        &::placeholder {
+          color: $light-text-secondary;
+
+          // Dark theme placeholder text.
+          .dark-theme & {
+            color: $dark-text-secondary;
+          }
+        }
+      }
+
+      // Container for an input with a special button (e.g., a data mapper).
+      .input-mapper {
+        position: relative;
+
+        // The button inside the input field.
+        .mapper-btn {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: $light-bg-tertiary;
+          border-radius: 6px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: $transition-fast;
+
+          // Dark theme style for the mapper button.
+          .dark-theme & {
+            background: $dark-bg-primary;
+          }
+
+          // Hover effect for the mapper button.
+          &:hover {
+            background: $primary;
+            color: white;
+            @include shadow-md;
+            transform: scale(1.1);
+
+            // Dark theme hover effect.
+            .dark-theme & {
+              @include dark-shadow-md;
+            }
+          }
+        }
+      }
+
+      // Group for a slider and its value display.
+      .slider-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        // The slider input.
+        .slider {
+          flex: 1;
+          height: 6px;
+          border-radius: 3px;
+          background: $light-border;
+          outline: none;
+          -webkit-appearance: none;
+          transition: $transition-fast;
+
+          // Dark theme style for the slider track.
+          .dark-theme & {
+            background: $dark-border;
+          }
+
+          // The thumb (handle) of the slider.
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, $primary, $purple);
+            cursor: pointer;
+            @include shadow-md;
+            transition: $transition-fast;
+
+            // Hover effect for the slider thumb.
+            &:hover {
+              @include shadow-lg;
+              transform: scale(1.2);
+
+              // Dark theme hover effect.
+              .dark-theme & {
+                @include dark-shadow-lg;
+              }
+            }
+          }
+        }
+
+        // Display for the current value of the slider.
+        .slider-value {
+          font-size: 12px;
+          color: $light-text-secondary;
+          min-width: 35px;
+          font-weight: 600;
+          background: $light-bg-tertiary;
+          padding: 4px 8px;
+          border-radius: 4px;
+
+          // Dark theme style for the slider value display.
+          .dark-theme & {
+            color: $dark-text-secondary;
+            background: $dark-bg-tertiary;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ===== STATUS BAR =====
+// Styles for the status bar at the bottom of the application.
+.status-bar {
+  height: 36px;
+  background: $light-bg-secondary;
+  border-top: 1px solid $light-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 12px;
+  color: $light-text-secondary;
+  @include shadow-sm;
+  transition: $transition-normal;
+
+  // Dark theme styles for the status bar.
+  .dark-theme & {
+    background: $dark-bg-primary;
+    border-top-color: $dark-border;
+    color: $dark-text-secondary;
+    @include dark-shadow-sm;
+  }
+
+  // Left and right sections of the status bar.
+  .status-left, .status-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  // An individual item in the status bar.
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: $transition-fast;
+
+    // Hover effect for status items.
+    &:hover {
+      background: $light-bg-tertiary;
+      color: $light-text-primary;
+
+      // Dark theme hover effect.
+      .dark-theme & {
+        background: $dark-bg-tertiary;
+        color: $dark-text-primary;
+      }
+    }
+
+    // Icon within a status item.
+    svg {
+      opacity: 0.7;
+    }
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+// Media queries to adjust the layout for different screen sizes.
+@media (max-width: 1200px) {
+  // On smaller desktops, reduce the width of the sidebars.
+  .left-sidebar {
+    width: 240px;
+  }
+  .right-sidebar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  // On tablets and mobile devices, hide the sidebars and main navigation.
+  .left-sidebar, .right-sidebar {
+    display: none;
+  }
+
+  .header-bar {
+    padding: 0 15px;
+
+    .header-left {
+      gap: 20px;
+    }
+
+    .main-nav {
+      display: none;
+    }
+  }
+}
+
+// ===== THEME TOGGLE BUTTON (Optional) =====
+// A floating action button to toggle between light and dark themes.
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: linear-gradient(135deg, $primary, $purple);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  @include shadow-xl;
+  transition: $transition-fast;
+  z-index: 1000;
+
+  // Hover effect for the theme toggle button.
+  &:hover {
+    @include shadow-2xl;
+    transform: scale(1.1) rotate(180deg);
+
+    // Dark theme hover effect.
+    .dark-theme & {
+      @include dark-shadow-2xl;
+    }
+  }
+}

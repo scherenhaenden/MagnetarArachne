@@ -12,5 +12,9 @@ export class FormSliderComponent {
   @Input() public step: number = 1;
   @Input() public value: number = 0;
   @Output() public valueChange: EventEmitter<number> = new EventEmitter<number>();
-  public onInput(v: string): void { this.value = Number(v); this.valueChange.emit(this.value); }
+  public onInput(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const newValue = target.value as any as number;
+    this.valueChange.emit(newValue);
+  }
 }

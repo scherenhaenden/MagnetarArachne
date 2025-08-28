@@ -2,3 +2,21 @@
 .connection-point.output { background:#6366f1; }
 .connection-point.true { border-color:#22c55e; background:#22c55e; }
 .connection-point.false { border-color:#ef4444; background:#ef4444; }
+
+
+.connection-point {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #6366f1;
+  background: transparent;
+  transition: all 0.2s ease;
+
+  &.output { background: #6366f1; }
+  &.true { border-color: #22c55e; background: #22c55e; }
+  &.false { border-color: #ef4444; background: #ef4444; }
+
+  &:hover { transform: scale(1.2); }
+  &.connecting { box-shadow: 0 0 8px currentColor; }
+}
+

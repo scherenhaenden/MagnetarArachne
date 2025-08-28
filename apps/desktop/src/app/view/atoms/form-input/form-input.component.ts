@@ -9,7 +9,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class FormInputComponent {
   @Input() public type: 'text'|'number' = 'text';
   @Input() public value: string | number = '';
-  @Input() public placeholder: string = '';
+  @Input() public placeholder = '';
   @Output() public valueChange: EventEmitter<string|number> = new EventEmitter<string|number>();
-  public onInput(v: string): void { this.value = this.type==='number' ? Number(v) : v; this.valueChange.emit(this.value); }
+
+  public onInput(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const newValue = this.type === 'number' ? Number(target.value) : target.value;
+    this.valueChange.emit(newValue);
+  }
 }

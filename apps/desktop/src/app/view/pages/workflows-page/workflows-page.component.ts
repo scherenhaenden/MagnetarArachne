@@ -1,17 +1,31 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { ButtonComponent, CollapseBtnComponent,
+  ConnectionPointComponent, FormInputComponent,
+  FormSelectComponent, FormSliderComponent, FormTextareaComponent, IconComponent, NodeIconComponent, SearchBoxComponent,
+  StatusItemComponent
+} from '../../atoms';
 
 @Component({
-  selector: 'app-nx-welcome',
-  standalone: false,
-  templateUrl: `./nx-welcome.html`,
-  styleUrl: `./nx-welcome.scss`,
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-workflows-page',
+  standalone: true,
+  templateUrl: './workflows-page.component.html',
+  imports: [
+    FormInputComponent,
+    IconComponent,
+    ButtonComponent,
+    CollapseBtnComponent,
+    SearchBoxComponent,
+    NodeIconComponent,
+    ConnectionPointComponent,
+    FormSelectComponent,
+    FormTextareaComponent,
+    FormSliderComponent,
+    StatusItemComponent,
+  ],
+  styleUrls: ['./workflows-page.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class NxWelcome {
-
-  constructor() {
-    this.toggleTheme();
-  }
+export class WorkflowsPageComponent {
   public searchTerm = '';
   public selectedModel = 'gpt-4-turbo';
   public systemPrompt = 'You are a helpful assistant.';
@@ -53,6 +67,10 @@ export class NxWelcome {
 
   onMaxTokensChange($event: string | number) {
 
+  }
+
+  constructor() {
+    this.toggleTheme();
   }
 
   private isDark = false;

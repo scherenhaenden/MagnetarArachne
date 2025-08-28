@@ -1,10 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 
 @Component({
   selector: 'app-collapse-btn',
   standalone: true,
   templateUrl: './collapse-btn.component.html',
-  styleUrls: ['./collapse-btn.component.scss']
+  styleUrls: ['./collapse-btn.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CollapseBtnComponent {
   @Input() public collapsed: boolean = false;
