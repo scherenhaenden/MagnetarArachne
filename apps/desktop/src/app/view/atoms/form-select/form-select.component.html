@@ -1,0 +1,3 @@
+<select [value]="value" (change)="onChange(($event.target as HTMLSelectElement).value)">
+  <option *ngFor="let opt of options" [value]="opt">{{ opt }}</option>
+</select>
