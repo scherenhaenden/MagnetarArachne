@@ -65,7 +65,7 @@ packages/pkg.python.hello/
 ├── execute.py             # Execution script
 └── requirements.txt       # (Optional) Dependencies
 
-````
+```
 
 **Manifest example (`arachne.package.json`):**
 ```json
