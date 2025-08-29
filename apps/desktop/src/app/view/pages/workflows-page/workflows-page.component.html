@@ -1,0 +1,424 @@
+<div class="magnetar-workspace">
+  <!-- Top Header Bar -->
+  <header class="header-bar">
+    <div class="header-left">
+      <div class="logo-section">
+        <app-icon class="logo-icon" title="MagnetarArachne">🕷️</app-icon>
+        <span class="logo-text">MagnetarArachne</span>
+      </div>
+      <nav class="main-nav">
+        <app-button class="nav-item active" >Workflows</app-button>
+        <app-button class="nav-item">Templates</app-button>
+        <app-button class="nav-item">Executions</app-button>
+        <app-button class="nav-item">Settings</app-button>
+        <button (click)="toggleTheme()" class="theme-toggle">
+          🌙 Toggle Dark Mode
+        </button>
+      </nav>
+    </div>
+    <div class="header-right">
+      <app-button class="header-btn">
+        <app-icon [size]="16" title="Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+          </svg>
+        </app-icon>
+      </app-button>
+      <app-button>
+        <app-icon [size]="16" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </app-icon>
+      </app-button>
+      <div class="user-avatar">
+        <img src="https://placehold.co/32x32/6366f1/ffffff?text=U" alt="User" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Left Sidebar - Node Palette -->
+    <aside class="left-sidebar">
+      <div class="sidebar-header">
+        <h3>Node Library</h3>
+        <app-collapse-btn [collapsed]="false" (toggle)="onSidebarToggle($event)">
+          <app-icon [size]="16">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"/>
+            </svg>
+          </app-icon>
+        </app-collapse-btn>
+      </div>
+
+      <app-search-box class="search-box" placeholder="Search nodes..." [value]="searchTerm" (valueChange)="onSearchChange($event)">
+        <app-icon [size]="16" icon>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </app-icon>
+      </app-search-box>
+
+      <div class="node-categories">
+        <div class="category-section">
+          <div class="category-header">
+            <app-collapse-btn [collapsed]="false" (toggle)="onCategoryToggle('core', $event)">
+              <app-icon [size]="16">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9,18 15,12 9,6"/>
+                </svg>
+              </app-icon>
+            </app-collapse-btn>
+            <span>Core</span>
+          </div>
+          <div class="node-list">
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon start" kind="start">▶</app-node-icon>
+              <span>Start</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon function" kind="function">ƒ</app-node-icon>
+              <span>Function</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon condition" kind="condition">?</app-node-icon>
+              <span>If Condition</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon switch" kind="switch">⚡</app-node-icon>
+              <span>Switch</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section">
+          <div class="category-header">
+            <app-collapse-btn [collapsed]="false" (toggle)="onCategoryToggle('ai', $event)">
+              <app-icon [size]="16">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9,18 15,12 9,6"/>
+                </svg>
+              </app-icon>
+            </app-collapse-btn>
+            <span>AI & ML</span>
+          </div>
+          <div class="node-list">
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon ai" kind="ai">🤖</app-node-icon>
+              <span>OpenAI GPT</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon ai" kind="ai">🧠</app-node-icon>
+              <span>Claude</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon vector" kind="vector">📊</app-node-icon>
+              <span>Vector Search</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon class="node-icon chat" kind="chat">💬</app-node-icon>
+              <span>Human Chat</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section">
+          <div class="category-header">
+            <app-collapse-btn [collapsed]="false" (toggle)="onCategoryToggle('data', $event)">
+              <app-icon [size]="16">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9,18 15,12 9,6"/>
+                </svg>
+              </app-icon>
+            </app-collapse-btn>
+            <span>Data</span>
+          </div>
+          <div class="node-list">
+            <div class="node-item" draggable="true">
+              <app-node-icon kind="database">🗄️</app-node-icon>
+              <span>Database</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon kind="api">🌐</app-node-icon>
+              <span>HTTP Request</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon kind="file">📄</app-node-icon>
+              <span>Read File</span>
+            </div>
+            <div class="node-item" draggable="true">
+              <app-node-icon kind="transform">🔄</app-node-icon>
+              <span>Transform</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Canvas Area -->
+    <main class="canvas-container">
+      <div class="canvas-toolbar">
+        <div class="toolbar-left">
+          <app-button variant="primary">
+            <app-icon [size]="16">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+              </svg>
+            </app-icon>
+            Select
+          </app-button>
+          <app-button>
+            <app-icon [size]="16">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14m-7-7l7 7-7 7"/>
+              </svg>
+            </app-icon>
+            Pan
+          </app-button>
+          <div class="zoom-controls">
+            <app-button>-</app-button>
+            <span class="zoom-level">100%</span>
+            <app-button>+</app-button>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <app-button variant="primary">
+            <app-icon [size]="16">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+            </app-icon>
+            Execute
+          </app-button>
+          <app-button>
+            <app-icon [size]="16">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17,21 17,13 7,13 7,21"/>
+                <polyline points="7,3 7,8 15,8"/>
+              </svg>
+            </app-icon>
+            Save
+          </app-button>
+        </div>
+      </div>
+
+      <div class="canvas-workspace">
+        <div class="canvas-grid">
+          <!-- Sample Workflow Nodes -->
+          <div class="workflow-node start-node" style="left: 100px; top: 150px;">
+            <div class="node-header">
+              <app-node-icon kind="start">▶</app-node-icon>
+              <span class="node-title">Start</span>
+              <div class="node-status success"></div>
+            </div>
+            <div class="node-outputs">
+              <app-connection-point type="output"></app-connection-point>
+            </div>
+          </div>
+
+          <div class="workflow-node function-node" style="left: 300px; top: 150px;">
+            <div class="node-header">
+              <app-node-icon kind="ai">🤖</app-node-icon>
+              <span class="node-title">OpenAI GPT-4</span>
+              <div class="node-status running"></div>
+            </div>
+            <div class="node-body">
+              <div class="node-field">
+                <label>Prompt:</label>
+                <div class="field-preview">Analyze the following text...</div>
+              </div>
+            </div>
+            <div class="node-inputs">
+              <app-connection-point type="input"></app-connection-point>
+            </div>
+            <div class="node-outputs">
+              <app-connection-point type="output"></app-connection-point>
+            </div>
+          </div>
+
+          <div class="workflow-node condition-node" style="left: 550px; top: 150px;">
+            <div class="node-header">
+              <app-node-icon kind="condition">?</app-node-icon>
+              <span class="node-title">If Condition</span>
+              <div class="node-status pending"></div>
+            </div>
+            <div class="node-body">
+              <div class="node-field">
+                <label>Condition:</label>
+                <div class="field-preview">sentiment === "positive"</div>
+              </div>
+            </div>
+            <div class="node-inputs">
+              <app-connection-point type="input"></app-connection-point>
+            </div>
+            <div class="node-outputs">
+              <app-connection-point type="output" state="true"></app-connection-point>
+              <app-connection-point type="output" state="false"></app-connection-point>
+            </div>
+          </div>
+
+          <div class="workflow-node chat-node" style="left: 300px; top: 350px;">
+            <div class="node-header">
+              <app-node-icon kind="chat">💬</app-node-icon>
+              <span class="node-title">Human Chat</span>
+              <div class="node-status waiting"></div>
+            </div>
+            <div class="node-body">
+              <div class="node-field">
+                <label>Message:</label>
+                <div class="field-preview">Please review the analysis...</div>
+              </div>
+            </div>
+            <div class="node-inputs">
+              <app-connection-point type="input"></app-connection-point>
+            </div>
+            <div class="node-outputs">
+              <app-connection-point type="output"></app-connection-point>
+            </div>
+          </div>
+
+          <!-- Connection Lines -->
+          <svg class="connection-layer">
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7"
+                      refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1" />
+              </marker>
+            </defs>
+
+            <!-- Start to GPT -->
+            <path d="M 180 170 Q 220 170 260 170"
+                  stroke="#6366f1" stroke-width="2" fill="none"
+                  marker-end="url(#arrowhead)" class="connection-line active"/>
+
+            <!-- GPT to Condition -->
+            <path d="M 430 170 Q 470 170 510 170"
+                  stroke="#6366f1" stroke-width="2" fill="none"
+                  marker-end="url(#arrowhead)" class="connection-line active"/>
+
+            <!-- Condition to Chat (False branch) -->
+            <path d="M 590 200 Q 590 250 380 350"
+                  stroke="#ef4444" stroke-width="2" fill="none"
+                  marker-end="url(#arrowhead)" class="connection-line"/>
+          </svg>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar - Properties Panel -->
+    <aside class="right-sidebar">
+      <div class="sidebar-header">
+        <h3>Properties</h3>
+        <app-collapse-btn class="collapse-btn" [collapsed]="false" (toggle)="onPropertiesToggle($event)">
+          <app-icon [size]="16">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"/>
+            </svg>
+          </app-icon>
+        </app-collapse-btn>
+      </div>
+
+      <div class="properties-content">
+        <div class="property-section">
+          <h4>OpenAI GPT-4</h4>
+          <div class="property-tabs">
+            <app-button class="tab active" variant="primary">Parameters</app-button>
+            <app-button class="tab">Settings</app-button>
+            <app-button class="tab">Output</app-button>
+          </div>
+        </div>
+
+        <div class="property-form">
+          <div class="form-group">
+            <label>Model</label>
+            <app-form-select  class="form-control"
+              [options]="['gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo']"
+              [value]="selectedModel"
+              (valueChange)="onModelChange($event)">
+            </app-form-select>
+          </div>
+
+          <div class="form-group">
+            <label>System Prompt</label>
+            <app-form-textarea
+              [rows]="3"
+              placeholder="You are a helpful assistant..."
+              [value]="systemPrompt"
+              (valueChange)="onSystemPromptChange($event)">
+            </app-form-textarea>
+          </div>
+
+          <div class="form-group">
+            <label>User Message</label>
+            <div class="input-mapper">
+              <app-form-textarea
+                [rows]="4"
+                placeholder="Enter your prompt or map from previous node..."
+                [value]="userMessage"
+                (valueChange)="onUserMessageChange($event)">
+              </app-form-textarea>
+              <app-button>
+                <app-icon [size]="16">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                  </svg>
+                </app-icon>
+              </app-button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Temperature</label>
+            <app-form-slider
+              [min]="0"
+              [max]="2"
+              [step]="0.1"
+              [value]="temperature"
+              (valueChange)="onTemperatureChange($event)">
+            </app-form-slider>
+          </div>
+
+          <div class="form-group">
+            <label>Max Tokens</label>
+            <app-form-input
+              type="number"
+              [value]="maxTokens"
+              (valueChange)="onMaxTokensChange($event)">
+            </app-form-input>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Bottom Status Bar -->
+  <footer class="status-bar">
+    <div class="status-left">
+      <app-status-item text="Last execution: 2 minutes ago">
+        <app-icon [size]="14" icon>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </app-icon>
+      </app-status-item>
+      <app-status-item text="4 nodes, 3 connections">
+        <app-icon [size]="14" icon>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </app-icon>
+      </app-status-item>
+    </div>
+    <div class="status-right">
+      <app-status-item text="Ready"></app-status-item>
+    </div>
+  </footer>
+</div>

@@ -8,7 +8,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class FormSelectComponent {
   @Input() public options: ReadonlyArray<string> = [];
-  @Input() public value: string = '';
+  @Input() public value = '';
   @Output() public valueChange: EventEmitter<string> = new EventEmitter<string>();
-  public onChange(v: string): void { this.value = v; this.valueChange.emit(v); }
+  public onChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const newValue = target.value;
+    this.value = newValue;
+    this.valueChange.emit(newValue);
+  }
 }

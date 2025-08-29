@@ -1,1 +1,20 @@
 .node-icon { display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; }
+.node-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+
+  &[data-kind="ai"]        { color: #8b5cf6; }
+  &[data-kind="chat"]      { color: #3b82f6; }
+  &[data-kind="vector"]    { color: #14b8a6; }
+  &[data-kind="database"]  { color: #06b6d4; }
+  &[data-kind="api"]       { color: #f59e0b; }
+  &[data-kind="file"]      { color: #64748b; }
+  &[data-kind="transform"] { color: #22c55e; }
+  &[data-kind="switch"]    { color: #eab308; }
+  &[data-kind="condition"] { color: #ef4444; }
+  &[data-kind="start"]     { color: #10b981; }
+}
