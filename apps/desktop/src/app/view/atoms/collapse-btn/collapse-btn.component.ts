@@ -17,5 +17,8 @@ export class CollapseBtnComponent {
   @Input() public collapsed: boolean = false;
   @Output() public toggle: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  /**
+   * Emits the toggle event with the opposite of the collapsed state.
+   */
   public onClick(): void { this.toggle.emit(!this.collapsed); }
 }
