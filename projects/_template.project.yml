@@ -1,0 +1,52 @@
+metadata:
+  name: "project_name_placeholder"
+  description: "A brief description of the project's purpose and scope."
+  start_date: "YYYY-MM-DD"
+  status: "active" # options: planned, active, paused, completed
+
+stakeholders:
+  - role: "Lead Developer"
+    name: "Name Placeholder"
+    contact: "email@example.com"
+  - role: "AI Agent"
+    name: "Agent Name Placeholder"
+    contact: "system_internal"
+
+milestones:
+  - id: "ms-01"
+    name: "Milestone 1 Name"
+    target_date: "YYYY-MM-DD"
+    status: "planned" # options: planned, in_progress, completed
+  - id: "ms-02"
+    name: "Milestone 2 Name"
+    target_date: "YYYY-MM-DD"
+    status: "planned"
+
+tasks:
+  - id: "task-001"
+    title: "Initial Task Description"
+    milestone_id: "ms-01"
+    owner: "Owner Name"
+    state: "planned" # options: planned, ready, in_progress, in_review, blocked, done
+    effort_pts: 3
+  - id: "task-002"
+    title: "Second Task Description"
+    milestone_id: "ms-01"
+    owner: "Owner Name"
+    state: "planned"
+    effort_pts: 5
+
+risks:
+  - id: "risk-001"
+    description: "Description of a potential risk."
+    severity: "high" # options: low, medium, high, critical
+    mitigation: "Plan to mitigate the risk."
+  - id: "risk-002"
+    description: "Another potential risk."
+    severity: "medium"
+    mitigation: "Another mitigation plan."
+
+reporting:
+  automated_reports: true
+  frequency: "daily"
+  webhook_url: "https://example.com/webhook/status" # Optional hook for status updates
